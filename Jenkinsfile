@@ -1,31 +1,32 @@
 pipeline {
-    agent none  // allows specifying different agents per stage
+    agent { label 'built-in' }
 
     stages {
-
-        stage("one") {   
-            agent { label 'built-in' }
+        stage("Deploy Repo1") {
             steps {
-                git branch: '2026Q1', url: 'https://github.com/127rutu/repo1.git'
-                sh "cp -r index.html /var/www/html"
+                dir('repo1') {
+                    git branch: '2026Q1', url: 'https://github.com/127rutu/repo1.git'
+                    sh 'cp index.html /var/www/html/index1.html'
+                }
             }
         }
 
-        stage("two") {  
-            agent { label 'slave-1' }
+        stage("Deploy Repo2") {
             steps {
-                git branch: '2026Q2', url: 'https://github.com/127rutu/repo2.git'
-                sh "cp -r index.html /var/www/html"
+                dir('repo2') {
+                    git branch: '2026Q2', url: 'https://github.com/127rutu/repo2.git'
+                    sh 'cp index.html /var/www/html/index2.html'
+                }
             }
         }
 
-        stage("three") { 
-            agent { label 'slave-2' }
+        stage("Deploy Repo3") {
             steps {
-                git branch: '2026Q3', url: 'https://github.com/127rutu/repo3.git'
-                sh "cp -r index.html /var/www/html"
+                dir('repo3') {
+                    git branch: '2026Q3', url: 'https://github.com/127rutu/repo3.git'
+                    sh 'cp index.html /var/www/html/index3.html'
+                }
             }
         }
-
     }
 }
